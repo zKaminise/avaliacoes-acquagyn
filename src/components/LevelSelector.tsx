@@ -30,15 +30,15 @@ export const LevelSelector = () => {
             {levels.map((level) => (
               <button
                 key={level.id}
-                className={`p-6 rounded-lg border-2 ${level.color} transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-acqua-500 focus:ring-opacity-50 ${level.id === "Baby" ? "relative" : ""}`}
+                className={`p-6 rounded-lg border-2 ${level.color} transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-acqua-500 focus:ring-opacity-50 ${level.id === "Baby" ? "relative pt-12" : ""}`}
                 onClick={() => setSelectedLevel(level.id)}
               >
                 {level.id === "Baby" && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
                     <img 
                       src="/lovable-uploads/b010b562-710b-4584-ade3-716a6fba794f.png" 
                       alt="Star" 
-                      className="h-12 w-12"
+                      className="h-16 w-16"
                     />
                   </div>
                 )}

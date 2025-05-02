@@ -41,7 +41,7 @@ export const generatePDF = async (
       </div>
       
       <div style="background-color: #f0f9ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-        <h2 style="color: #0284c7; margin: 0 0 10px 0; font-size: 18px;">AVALIAÇÃO DE DESEMPENHO - NÍVEL ${level}</h2>
+        <h2 style="color: #0284c7; margin: 0 0 10px 0; font-size: 18px;">Avaliação de Desempenho - Nível ${level}</h2>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
           <div>

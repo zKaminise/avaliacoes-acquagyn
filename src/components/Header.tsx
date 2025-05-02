@@ -9,9 +9,8 @@ export const Header = () => {
   return (
     <header className="bg-white shadow-sm">
       <div className="container mx-auto py-4 px-4 sm:px-6 flex justify-between items-center">
-        <div className="flex items-center space-x-3">
-          <WaterLogo className="h-8 w-8" />
-          <h1 className="text-xl font-bold text-acqua-600">Acquagyn</h1>
+        <div className="flex items-center">
+          <WaterLogo className="h-10 w-auto" />
         </div>
         <div className="flex items-center space-x-4">
           {user && (

@@ -120,13 +120,15 @@ export const generatePDF = async (
       </table>
       
       <div style="display: flex; justify-content: space-between; margin-top: 40px;">
-        <div style="width: 45%; border-top: 1px solid #64748b; padding-top: 5px; text-align: center;">
+        <div style="width: 45%; text-align: center;">
           <p style="margin: 0; font-size: 14px;">${studentInfo.teacher}</p>
           <p style="margin: 0; font-size: 14px;">Professor</p>
+          <div style="border-top: 1px solid #64748b; margin-top: 5px;"></div>
         </div>
-        <div style="width: 45%; border-top: 1px solid #64748b; padding-top: 5px; text-align: center;">
+        <div style="width: 45%; text-align: center;">
           <p style="margin: 0; font-size: 14px;">Ciente e de acordo com as avaliações acima</p>
           <p style="margin: 0; font-size: 14px;">Responsável</p>
+          <div style="border-top: 1px solid #64748b; margin-top: 5px;"></div>
         </div>
       </div>
       

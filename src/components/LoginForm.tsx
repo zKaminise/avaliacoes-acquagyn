@@ -28,9 +28,8 @@ export const LoginForm = () => {
       <Card className="w-[350px] shadow-lg">
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center">
-            <WaterLogo className="h-20 w-20" />
+            <WaterLogo className="h-24 w-auto" />
           </div>
-          <CardTitle className="text-2xl font-bold text-acqua-600">Acquagyn</CardTitle>
           <CardDescription>Acesso restrito para professores</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>

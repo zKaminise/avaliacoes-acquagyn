@@ -17,8 +17,15 @@ export const LevelSelector = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <Card>
-        <CardHeader>
-          <CardTitle className="text-center text-2xl text-acqua-700">
+        <CardHeader className="relative">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <img 
+              src="/lovable-uploads/b010b562-710b-4584-ade3-716a6fba794f.png" 
+              alt="Star" 
+              className="h-16 w-16"
+            />
+          </div>
+          <CardTitle className="text-center text-2xl text-acqua-700 mt-8">
             Avaliação de Natação
           </CardTitle>
           <CardDescription className="text-center">

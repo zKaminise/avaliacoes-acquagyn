@@ -17,15 +17,8 @@ export const LevelSelector = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <Card>
-        <CardHeader className="relative">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <img 
-              src="/lovable-uploads/b010b562-710b-4584-ade3-716a6fba794f.png" 
-              alt="Star" 
-              className="h-16 w-16"
-            />
-          </div>
-          <CardTitle className="text-center text-2xl text-acqua-700 mt-8">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl text-acqua-700">
             Avaliação de Natação
           </CardTitle>
           <CardDescription className="text-center">
@@ -37,9 +30,18 @@ export const LevelSelector = () => {
             {levels.map((level) => (
               <button
                 key={level.id}
-                className={`p-6 rounded-lg border-2 ${level.color} transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-acqua-500 focus:ring-opacity-50`}
+                className={`p-6 rounded-lg border-2 ${level.color} transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-acqua-500 focus:ring-opacity-50 ${level.id === "Baby" ? "relative" : ""}`}
                 onClick={() => setSelectedLevel(level.id)}
               >
+                {level.id === "Baby" && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <img 
+                      src="/lovable-uploads/b010b562-710b-4584-ade3-716a6fba794f.png" 
+                      alt="Star" 
+                      className="h-12 w-12"
+                    />
+                  </div>
+                )}
                 <h3 className="text-lg font-medium text-gray-800">{level.id}</h3>
                 <div className="mt-2">
                   <span className="text-sm text-gray-600">

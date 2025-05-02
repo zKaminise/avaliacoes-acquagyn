@@ -14,7 +14,7 @@ export const StudentForm = () => {
         <CardTitle className="text-lg text-acqua-700">Informações do aluno</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="space-y-2">
             <Label htmlFor="name">Nome do aluno</Label>
             <Input
@@ -32,16 +32,6 @@ export const StudentForm = () => {
               value={studentInfo.age}
               onChange={(e) => setStudentInfo({ age: e.target.value })}
               placeholder="Ex: 7 anos"
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="class">Turma</Label>
-            <Input
-              id="class"
-              value={studentInfo.class}
-              onChange={(e) => setStudentInfo({ class: e.target.value })}
-              placeholder="Ex: Turma 3B"
               required
             />
           </div>

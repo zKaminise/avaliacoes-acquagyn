@@ -5,6 +5,16 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ActivityType, LevelType, ActivityRatingType, StudentInfoType } from "@/contexts/EvaluationContext";
 
+// Map of level-specific images
+const levelImages: Record<LevelType, string> = {
+  "Baby": "/lovable-uploads/b010b562-710b-4584-ade3-716a6fba794f.png", // Star icon for Baby level
+  "Adaptação": "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop", 
+  "Iniciação": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=100&h=100&fit=crop",
+  "Aprendizagem 1": "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=100&h=100&fit=crop",
+  "Aprendizagem 2": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=100&h=100&fit=crop",
+  "Aprendizagem 3": "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=100&h=100&fit=crop"
+};
+
 export const generatePDF = async (
   level: LevelType,
   studentInfo: StudentInfoType,
@@ -43,14 +53,14 @@ export const generatePDF = async (
       <div style="background-color: #f0f9ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
         <h2 style="color: #0284c7; margin: 0 0 10px 0; font-size: 18px;">Avaliação de Desempenho - Nível ${level}</h2>
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
-          <div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 15px;">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
             <p style="margin: 0; font-size: 14px;"><strong>Nome:</strong> ${studentInfo.name}</p>
-            <p style="margin: 5px 0; font-size: 14px;"><strong>Idade:</strong> ${studentInfo.age}</p>
+            <p style="margin: 0; font-size: 14px;"><strong>Idade:</strong> ${studentInfo.age}</p>
+            <p style="margin: 0; font-size: 14px;"><strong>Professor:</strong> ${studentInfo.teacher}</p>
           </div>
           <div>
-            <p style="margin: 0; font-size: 14px;"><strong>Turma:</strong> ${studentInfo.class}</p>
-            <p style="margin: 5px 0; font-size: 14px;"><strong>Professor:</strong> ${studentInfo.teacher}</p>
+            <img src="${levelImages[level]}" alt="Nível ${level}" style="width: 80px; height: 80px; object-fit: contain;" />
           </div>
         </div>
       </div>

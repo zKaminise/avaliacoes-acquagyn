@@ -19,7 +19,7 @@ export const EvaluationForm = () => {
 
   const handleGeneratePDF = async () => {
     // Basic validation
-    if (!studentInfo.name || !studentInfo.age || !studentInfo.class || !studentInfo.teacher) {
+    if (!studentInfo.name || !studentInfo.age || !studentInfo.teacher) {
       toast.error("Por favor, preencha todos os dados do aluno.");
       return;
     }

@@ -33,7 +33,7 @@ export const generatePDF = async (
     <div style="padding: 20px; border: 2px solid #0ea5e9;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
         <div style="display: flex; align-items: center;">
-          <img src="/lovable-uploads/0d85c0da-2aab-4954-9e10-99368ef81b4e.png" alt="Acquagyn Logo" style="height: 50px; width: auto;" />
+          <img src="/lovable-uploads/0d85c0da-2aab-4954-9e10-99368ef81b4e.png" alt="Acquagyn Logo" style="height: 100px; width: auto;" />
         </div>
         <div style="text-align: right;">
           <p style="margin: 0; font-size: 14px;">Data: ${currentDate}</p>

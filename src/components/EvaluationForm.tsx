@@ -6,6 +6,7 @@ import { StudentForm } from "./StudentForm";
 import { ActivityRating } from "./ActivityRating";
 import { generatePDF } from "@/utils/pdfGenerator";
 import { toast } from "sonner";
+import { CertificateForm } from "./CertificateForm";
 
 export const EvaluationForm = () => {
   const { selectedLevel, activities, activityRatings, studentInfo, resetEvaluation } = useEvaluation();
@@ -75,6 +76,8 @@ export const EvaluationForm = () => {
           {isGeneratingPdf ? "Gerando PDF..." : "Gerar PDF"}
         </Button>
       </div>
+      
+      <CertificateForm />
     </div>
   );
 };

@@ -1,14 +1,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { WaterLogo } from "./WaterLogo";
 
 export const LoginForm = () => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("admin@teste.com");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -67,7 +67,7 @@ export const LoginForm = () => {
           </CardFooter>
         </form>
         <div className="pb-4 px-4 text-xs text-center text-muted-foreground">
-          <p>Senha para teste: acquagyn</p>
+          <p>Credenciais: admin@teste.com / adm123</p>
         </div>
       </Card>
     </div>

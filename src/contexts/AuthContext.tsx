@@ -26,13 +26,13 @@ type AuthProviderProps = {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // Mock login function
+  // Fixed login function with preset credentials
   const login = async (username: string, password: string): Promise<boolean> => {
-    // For demo purposes, accept any username but password must be "acquagyn"
-    if (password === "acquagyn") {
+    // Check for fixed credentials: admin@teste.com/adm123
+    if (username === "admin@teste.com" && password === "adm123") {
       setUser({
         id: "1",
-        name: username,
+        name: "Administrador",
         role: "instructor",
       });
       toast.success("Login realizado com sucesso!");

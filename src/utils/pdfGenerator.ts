@@ -1,4 +1,3 @@
-
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { format } from "date-fns";
@@ -6,17 +5,15 @@ import { ptBR } from "date-fns/locale";
 import { ActivityType, LevelType, ActivityRatingType, StudentInfoType } from "@/contexts/EvaluationContext";
 import { levelImages } from "./levelImages";
 
-
 export const generatePDF = async (
   level: LevelType,
   studentInfo: StudentInfoType,
   activityRatings: ActivityRatingType[],
   activitiesMap: Record<LevelType, ActivityType[]>
 ) => {
-  // Create a temporary div to render the PDF content
   const element = document.createElement("div");
   element.className = "pdf-container";
-  element.style.width = "795px"; // A4 width in pixels at 96 DPI
+  element.style.width = "795px"; 
   element.style.padding = "40px";
   element.style.backgroundColor = "white";
   element.style.fontFamily = "Arial, sans-serif";
@@ -24,39 +21,45 @@ export const generatePDF = async (
   element.style.left = "-9999px";
   document.body.appendChild(element);
 
-  // Get the activities for this level
   const levelActivities = activitiesMap[level];
 
-  // Current date
   const currentDate = format(new Date(), "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
 
-  // Create the HTML content
-  element.innerHTML = `
-    <div style="padding: 20px; border: 2px solid #0ea5e9;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-        <div style="display: flex; align-items: center;">
-          <img src="/lovable-uploads/0d85c0da-2aab-4954-9e10-99368ef81b4e.png" alt="Acquagyn Logo" style="height: 100px; width: auto;" />
+  const activitiesPerPage = levelActivities.length > 7 ? Math.ceil(levelActivities.length / 2) : levelActivities.length;
+  const needsPagination = levelActivities.length > 7;
+
+  console.log(`Generating PDF with ${levelActivities.length} activities. Needs pagination: ${needsPagination}`);
+
+  const createHeader = () => `
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+      <div style="display: flex; align-items: center;">
+        <img src="/lovable-uploads/0d85c0da-2aab-4954-9e10-99368ef81b4e.png" alt="Acquagyn Logo" style="height: 100px; width: auto;" />
+      </div>
+      <div style="text-align: right;">
+        <p style="margin: 0; font-size: 14px;">${currentDate}</p>
+      </div>
+    </div>
+  `;
+
+  const createStudentInfo = () => `
+    <div style="background-color: #f0f9ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+      <h2 style="color: #0284c7; margin: 0 0 10px 0; font-size: 18px;">Avaliação de Desempenho - Nível ${level}</h2>
+      
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 15px;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <p style="margin: 0; font-size: 14px;"><strong>Nome:</strong> ${studentInfo.name}</p>
+          <p style="margin: 0; font-size: 14px;"><strong>Idade:</strong> ${studentInfo.age}</p>
+          <p style="margin: 0; font-size: 14px;"><strong>Professor:</strong> ${studentInfo.teacher}</p>
         </div>
-        <div style="text-align: right;">
-          <p style="margin: 0; font-size: 14px;">Data: ${currentDate}</p>
+        <div>
+          <img src="${levelImages[level]}" alt="Nível ${level}" style="width: 80px; height: 80px; object-fit: contain;" />
         </div>
       </div>
-      
-      <div style="background-color: #f0f9ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-        <h2 style="color: #0284c7; margin: 0 0 10px 0; font-size: 18px;">Avaliação de Desempenho - Nível ${level}</h2>
-        
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 15px;">
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <p style="margin: 0; font-size: 14px;"><strong>Nome:</strong> ${studentInfo.name}</p>
-            <p style="margin: 0; font-size: 14px;"><strong>Idade:</strong> ${studentInfo.age}</p>
-            <p style="margin: 0; font-size: 14px;"><strong>Professor:</strong> ${studentInfo.teacher}</p>
-          </div>
-          <div>
-            <img src="${levelImages[level]}" alt="Nível ${level}" style="width: 80px; height: 80px; object-fit: contain;" />
-          </div>
-        </div>
-      </div>
-      
+    </div>
+  `;
+
+  const createActivitiesTable = (activities: ActivityType[], startIndex: number = 0) => {
+    return `
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
         <thead>
           <tr style="background-color: #0284c7; color: white;">
@@ -65,7 +68,7 @@ export const generatePDF = async (
           </tr>
         </thead>
         <tbody>
-          ${levelActivities.map((activity, index) => {
+          ${activities.map((activity, index) => {
             const rating = activityRatings.find(r => r.activityId === activity.id);
             let bgColor = "#ffffff";
             let textColor = "#000000";
@@ -88,7 +91,7 @@ export const generatePDF = async (
             }
             
             return `
-              <tr style="background-color: ${index % 2 === 0 ? '#f8fafc' : '#ffffff'};">
+              <tr style="background-color: ${(startIndex + index) % 2 === 0 ? '#f8fafc' : '#ffffff'};">
                 <td style="padding: 10px; border: 1px solid #cbd5e1;">
                   <p style="margin: 0; font-weight: bold;">${activity.name}</p>
                   <p style="margin: 5px 0 0 0; font-size: 12px; color: #64748b;">${activity.description}</p>
@@ -102,48 +105,130 @@ export const generatePDF = async (
           }).join('')}
         </tbody>
       </table>
-      
-      <div style="display: flex; justify-content: space-between; margin-top: 40px;">
-        <div style="width: 45%; text-align: center;">
-          <p style="margin: 0; font-size: 14px;">${studentInfo.teacher}</p>
-          <div style="border-top: 1px solid #64748b; margin-top: 5px;"></div>
-          <p style="margin: 5px 0 0 0; font-size: 14px;">Professor</p>
-        </div>
-        <div style="width: 45%; text-align: center;">
-          <p style="margin: 0; font-size: 14px;">Ciente e de acordo com as avaliações acima</p>
-          <div style="border-top: 1px solid #64748b; margin-top: 5px;"></div>
-          <p style="margin: 5px 0 0 0; font-size: 14px;">Responsável</p>
-        </div>
+    `;
+  };
+
+  const createSignatures = () => `
+    <div style="display: flex; justify-content: space-between; margin-top: 40px;">
+      <div style="width: 45%; text-align: center;">
+        <p style="margin: 0; font-size: 14px;">${studentInfo.teacher}</p>
+        <div style="border-top: 1px solid #64748b; margin-top: 5px;"></div>
+        <p style="margin: 5px 0 0 0; font-size: 14px;">Professor</p>
       </div>
-      
-      <div style="margin-top: 30px; border-top: 1px dashed #cbd5e1; padding-top: 15px; text-align: center; font-size: 12px; color: #64748b;">
-        <p style="margin: 0;">Academia Acquagyn - Excelência em natação desde 2005</p>
-        <p style="margin: 5px 0 0 0;">www.acquagyn.com.br | contato@acquagyn.com.br | (00) 0000-0000</p>
+      <div style="width: 45%; text-align: center;">
+        <p style="margin: 0; font-size: 14px;">Ciente e de acordo com as avaliações acima</p>
+        <div style="border-top: 1px solid #64748b; margin-top: 5px;"></div>
+        <p style="margin: 5px 0 0 0; font-size: 14px;">Responsável</p>
       </div>
     </div>
   `;
 
-  try {
-    // Convert the HTML to canvas
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-    });
+  const createFooter = () => `
+    <div style="margin-top: 30px; border-top: 1px dashed #cbd5e1; padding-top: 15px; text-align: center; font-size: 12px; color: #64748b;">
+      <p style="margin: 0;">Academia Acquagyn - Excelência em natação desde 2005</p>
+      <p style="margin: 5px 0 0 0;">www.acquagyn.com.br | contato@acquagyn.com.br | (00) 0000-0000</p>
+    </div>
+  `;
 
-    // Create PDF
-    const imgData = canvas.toDataURL('image/png');
+  try {
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    let pageNumber = 1;
+
+    if (!needsPagination) {
+      element.innerHTML = `
+        <div style="padding: 20px; border: 2px solid #0ea5e9;">
+          ${createHeader()}
+          ${createStudentInfo()}
+          ${createActivitiesTable(levelActivities)}
+          ${createSignatures()}
+          ${createFooter()}
+        </div>
+      `;
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        height: element.scrollHeight
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      
+      console.log(`Single page - Canvas: ${canvas.width}x${canvas.height}, PDF: ${pdfWidth}x${pdfHeight}mm`);
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    } else {
+      const firstPageActivities = levelActivities.slice(0, activitiesPerPage);
+      const secondPageActivities = levelActivities.slice(activitiesPerPage);
+
+      element.innerHTML = `
+        <div style="padding: 20px; border: 2px solid #0ea5e9;">
+          ${createHeader()}
+          ${createStudentInfo()}
+          ${createActivitiesTable(firstPageActivities, 0)}
+          <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #64748b;">
+            Página 1 de 2
+          </div>
+        </div>
+      `;
+
+      let canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        height: element.scrollHeight
+      });
+
+      let imgData = canvas.toDataURL('image/png');
+      let imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      let pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      
+      console.log(`Page 1 - Canvas: ${canvas.width}x${canvas.height}, PDF: ${pdfWidth}x${pdfHeight}mm`);
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+      pdf.addPage();
+      pageNumber++;
+
+      element.innerHTML = `
+        <div style="padding: 20px; border: 2px solid #0ea5e9;">
+          ${createHeader()}
+          <div style="background-color: #f0f9ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h3 style="color: #0284c7; margin: 0; font-size: 16px;">Continuação - Avaliação de ${studentInfo.name}</h3>
+          </div>
+          ${createActivitiesTable(secondPageActivities, activitiesPerPage)}
+          ${createSignatures()}
+          ${createFooter()}
+          <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #64748b;">
+            Página 2 de 2
+          </div>
+        </div>
+      `;
+
+      canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        height: element.scrollHeight
+      });
+
+      imgData = canvas.toDataURL('image/png');
+      imgProps = pdf.getImageProperties(imgData);
+      pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      
+      console.log(`Page 2 - Canvas: ${canvas.width}x${canvas.height}, PDF: ${pdfWidth}x${pdfHeight}mm`);
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    }
     
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    console.log(`PDF generation completed with ${pageNumber} page(s)`);
     
-    // Download the PDF
     pdf.save(`avaliacao_${level.replace(/\s+/g, '_').toLowerCase()}_${studentInfo.name.replace(/\s+/g, '_').toLowerCase()}.pdf`);
   } finally {
-    // Remove the temporary element
     document.body.removeChild(element);
   }
 };

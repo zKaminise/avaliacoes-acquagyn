@@ -66,9 +66,9 @@ export const LoginForm = () => {
             </Button>
           </CardFooter>
         </form>
-        <div className="pb-4 px-4 text-xs text-center text-muted-foreground">
+        {/* <div className="pb-4 px-4 text-xs text-center text-muted-foreground">
           <p>Credenciais: admin@teste.com / adm123</p>
-        </div>
+        </div> */}
       </Card>
     </div>
   );

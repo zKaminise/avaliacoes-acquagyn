@@ -21,15 +21,11 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
-// This is a mock authentication provider
-// In a real application, this would be connected to your backend
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // Fixed login function with preset credentials
   const login = async (username: string, password: string): Promise<boolean> => {
-    // Check for fixed credentials: admin@teste.com/adm123
-    if (username === "admin@teste.com" && password === "adm123") {
+    if (username === "michelampk31@gmail.com" && password === "Takamori01") {
       setUser({
         id: "1",
         name: "Administrador",

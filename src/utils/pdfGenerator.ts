@@ -4,7 +4,7 @@ import html2canvas from "html2canvas";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ActivityType, LevelType, ActivityRatingType, StudentInfoType } from "@/contexts/EvaluationContext";
-import { levelImages } from "./LevelImages";
+import { levelImages } from "./levelImages";
 
 
 export const generatePDF = async (

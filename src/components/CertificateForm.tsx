@@ -17,12 +17,14 @@ export const CertificateForm = () => {
   
   // All available levels
   const levels: LevelType[] = [
-    "Baby",
+    "Baby 1",
+    "Baby 2",
+    "Baby 3",
     "Adaptação",
     "Iniciação",
-    "Aprendizagem 1",
-    "Aprendizagem 2",
-    "Aprendizagem 3"
+    "Aperfeiçoamento 1",
+    "Aperfeiçoamento 2",
+    "Aperfeiçoamento 3"
   ];
 
   // Filter levels that are "higher" than the current level

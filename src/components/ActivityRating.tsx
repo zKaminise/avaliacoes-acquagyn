@@ -20,11 +20,9 @@ export const ActivityRating = ({ activity }: ActivityRatingProps) => {
   const [observation, setObservation] = useState(currentRating?.observation || "");
   
   const ratings: RatingType[] = [
-    "Não foi bem",
-    "Melhorar",
-    "Bom",
-    "Muito bom",
-    "Excelente"
+    "Não Atingido",
+    "Parcialmente Atingido",
+    "Totalmente Atingido"
   ];
 
   const handleRatingClick = (rating: RatingType) => {
@@ -47,19 +45,15 @@ export const ActivityRating = ({ activity }: ActivityRatingProps) => {
     
     if (isSelected) {
       switch(rating) {
-        case "Não foi bem": return cn(baseClasses, selectedClasses, "bg-red-500 text-white");
-        case "Melhorar": return cn(baseClasses, selectedClasses, "bg-orange-500 text-white");
-        case "Bom": return cn(baseClasses, selectedClasses, "bg-yellow-500 text-white");
-        case "Muito bom": return cn(baseClasses, selectedClasses, "bg-green-500 text-white");
-        case "Excelente": return cn(baseClasses, selectedClasses, "bg-blue-500 text-white");
+        case "Não Atingido": return cn(baseClasses, selectedClasses, "bg-red-500 text-white");
+        case "Parcialmente Atingido": return cn(baseClasses, selectedClasses, "bg-yellow-500 text-white");
+        case "Totalmente Atingido": return cn(baseClasses, selectedClasses, "bg-blue-500 text-white");
       }
     } else {
       switch(rating) {
-        case "Não foi bem": return cn(baseClasses, "bg-red-100 text-red-700 hover:bg-red-200");
-        case "Melhorar": return cn(baseClasses, "bg-orange-100 text-orange-700 hover:bg-orange-200");
-        case "Bom": return cn(baseClasses, "bg-yellow-100 text-yellow-700 hover:bg-yellow-200");
-        case "Muito bom": return cn(baseClasses, "bg-green-100 text-green-700 hover:bg-green-200");
-        case "Excelente": return cn(baseClasses, "bg-blue-100 text-blue-700 hover:bg-blue-200");
+        case "Não Atingido": return cn(baseClasses, "bg-red-100 text-red-700 hover:bg-red-200");
+        case "Parcialmente Atingido": return cn(baseClasses, "bg-yellow-100 text-yellow-700 hover:bg-yellow-200");
+        case "Totalmente Atingido": return cn(baseClasses, "bg-blue-100 text-blue-700 hover:bg-blue-200");
       }
     }
   };

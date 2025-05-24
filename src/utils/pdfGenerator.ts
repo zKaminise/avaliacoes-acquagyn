@@ -4,16 +4,8 @@ import html2canvas from "html2canvas";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ActivityType, LevelType, ActivityRatingType, StudentInfoType } from "@/contexts/EvaluationContext";
+import { levelImages } from "./LevelImages";
 
-// Map of level-specific images
-const levelImages: Record<LevelType, string> = {
-  "Baby": "/lovable-uploads/b010b562-710b-4584-ade3-716a6fba794f.png", // Star icon for Baby level
-  "Adaptação": "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop", 
-  "Iniciação": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=100&h=100&fit=crop",
-  "Aprendizagem 1": "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=100&h=100&fit=crop",
-  "Aprendizagem 2": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=100&h=100&fit=crop",
-  "Aprendizagem 3": "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=100&h=100&fit=crop"
-};
 
 export const generatePDF = async (
   level: LevelType,
@@ -80,23 +72,15 @@ export const generatePDF = async (
             
             if (rating) {
               switch(rating.rating) {
-                case "Não foi bem": 
+                case "Não Atingido": 
                   bgColor = "#fee2e2"; 
                   textColor = "#dc2626"; 
                   break;
-                case "Melhorar": 
-                  bgColor = "#ffedd5"; 
-                  textColor = "#ea580c"; 
-                  break;
-                case "Bom": 
+                case "Parcialmente Atingido": 
                   bgColor = "#fef9c3"; 
                   textColor = "#ca8a04"; 
                   break;
-                case "Muito bom": 
-                  bgColor = "#dcfce7"; 
-                  textColor = "#16a34a"; 
-                  break;
-                case "Excelente": 
+                case "Totalmente Atingido": 
                   bgColor = "#dbeafe"; 
                   textColor = "#2563eb"; 
                   break;

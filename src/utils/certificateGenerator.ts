@@ -1,19 +1,9 @@
-
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { LevelType } from "@/contexts/EvaluationContext";
-
-// Map of level-specific images
-const levelImages: Record<LevelType, string> = {
-  "Baby": "/lovable-uploads/b010b562-710b-4584-ade3-716a6fba794f.png", // Star icon for Baby level
-  "Adaptação": "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop", 
-  "Iniciação": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=100&h=100&fit=crop",
-  "Aprendizagem 1": "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=100&h=100&fit=crop",
-  "Aprendizagem 2": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=100&h=100&fit=crop",
-  "Aprendizagem 3": "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=100&h=100&fit=crop"
-};
+import { levelImages } from "./LevelImages";
 
 export const generateCertificate = async (
   studentName: string,
@@ -26,118 +16,142 @@ export const generateCertificate = async (
   element.style.width = "1123px"; // A4 landscape width in pixels at 96 DPI
   element.style.height = "794px"; // A4 landscape height in pixels
   element.style.backgroundColor = "white";
-  element.style.fontFamily = "Arial, sans-serif";
+  element.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
   element.style.position = "absolute";
   element.style.left = "-9999px";
   document.body.appendChild(element);
 
   // Current date
   const currentDate = format(new Date(), "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
+  
+  // Generate a unique certificate ID
+  const certificateId = Math.random().toString(36).substr(2, 9).toUpperCase();
 
-  // Create the HTML content
+  // Create the HTML content with improved design inspired by the uploaded certificate
   element.innerHTML = `
     <div style="width: 100%; height: 100%; position: relative; overflow: hidden;">
-      <!-- Background image -->
+      <!-- Background with gradient overlay similar to the uploaded certificate -->
       <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
-        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1123&h=794" 
-             alt="Background" 
-             style="width: 100%; height: 100%; object-fit: cover; opacity: 0.2;" />
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 30%, #80deea 60%, #4dd0e1 100%);"></div>
       </div>
       
-      <!-- Certificate border -->
-      <div style="position: relative; z-index: 2; border: 12px double #0ea5e9; margin: 20px; height: calc(100% - 40px); 
-                  display: flex; flex-direction: column; justify-content: space-between; padding: 30px; background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,249,255,0.9) 100%);">
+      <!-- Certificate content -->
+      <div style="position: relative; z-index: 3; border: 3px solid #0277bd; border-radius: 12px; margin: 24px; height: calc(100% - 48px); 
+                display: flex; flex-direction: column; justify-content: space-between; padding: 30px; 
+                background-color: rgba(255, 255, 255, 0.85);">
         
-        <!-- Header with logo -->
-        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-          <img src="/lovable-uploads/0d85c0da-2aab-4954-9e10-99368ef81b4e.png" alt="Acquagyn Logo" style="height: 80px; width: auto;" />
+        <!-- Level images in corners like the stars in the example -->
+        <div style="position: absolute; top: -15px; left: -15px; width: 70px; height: 70px;">
+          <img src="${levelImages[currentLevel]}" alt="Level" style="width: 100%; height: 100%;" />
+        </div>
+        <div style="position: absolute; top: -15px; right: -15px; width: 70px; height: 70px;">
+          <img src="${levelImages[newLevel]}" alt="Level" style="width: 100%; height: 100%;" />
+        </div>
+        <div style="position: absolute; bottom: -15px; left: -15px; width: 70px; height: 70px;">
+          <img src="${levelImages[currentLevel]}" alt="Level" style="width: 100%; height: 100%;" />
+        </div>
+        <div style="position: absolute; bottom: -15px; right: -15px; width: 70px; height: 70px;">
+          <img src="${levelImages[newLevel]}" alt="Level" style="width: 100%; height: 100%;" />
         </div>
         
-        <!-- Title -->
-        <div style="text-align: center; margin-bottom: 10px;">
-          <h1 style="margin: 0; font-size: 42px; color: #0284c7; text-transform: uppercase; letter-spacing: 2px;">Certificado</h1>
-          <div style="width: 200px; height: 3px; background-color: #0284c7; margin: 10px auto;"></div>
-          <h2 style="margin: 10px 0; font-size: 22px; color: #0369a1; font-weight: normal;">Aprovação de Nível em Natação</h2>
+        <!-- Title with improved typography -->
+        <div style="text-align: center; margin-bottom: 10px; margin-top: 20px;">
+          <h1 style="margin: 0; font-size: 46px; color: #01579b; text-transform: uppercase; letter-spacing: 3px; 
+                     font-weight: 800; text-shadow: 1px 1px 1px rgba(0,0,0,0.1);">Certificado de Conclusão</h1>
+          <div style="width: 80%; height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #01579b 50%, rgba(255,255,255,0) 100%); 
+                      margin: 20px auto;"></div>
         </div>
         
         <!-- Main content -->
-        <div style="text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
-          <p style="font-size: 18px; margin-bottom: 15px;">Certificamos que</p>
-          <p style="font-size: 32px; font-weight: bold; color: #0284c7; margin: 15px 0;">${studentName}</p>
-          <p style="font-size: 18px; margin: 15px 0;">concluiu com êxito o nível <strong>${currentLevel}</strong> e está aprovado para o nível <strong>${newLevel}</strong></p>
+        <div style="text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 30px;">
+          <p style="font-size: 20px; margin-bottom: 20px; color: #01579b;">
+            A Academia <strong>Acquagyn</strong> certifica que o(a) aluno(a)
+          </p>
+          <p style="font-size: 42px; font-weight: bold; color: #01579b; margin: 20px 0; font-family: cursive; 
+                    text-shadow: 1px 1px 1px rgba(0,0,0,0.05);">${studentName}</p>
+          <p style="font-size: 20px; margin: 20px 0 30px; color: #01579b;">
+            concluiu com êxito o nível <strong>${currentLevel}</strong> 
+            e está aprovado para o nível <strong>${newLevel}</strong>
+            no dia ${currentDate}.
+          </p>
           
-          <!-- Level progression visualization with icons and arrow -->
-          <div style="display: flex; justify-content: center; align-items: center; margin: 30px 0;">
-            <div style="text-align: center; margin-right: 20px;">
-              <img src="${levelImages[currentLevel]}" alt="Nível ${currentLevel}" 
-                   style="width: 80px; height: 80px; object-fit: contain; border-radius: 50%; border: 3px solid #0ea5e9; padding: 5px; background-color: white;" />
-              <p style="margin: 10px 0 0 0; font-size: 16px;">${currentLevel}</p>
+          <!-- Level progression visualization with improved styling -->
+          <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
+            <div style="text-align: center; margin-right: 25px;">
+              <div style="background: white; border-radius: 50%; padding: 5px; box-shadow: 0 4px 12px rgba(1,87,155,0.2); 
+                          border: 3px solid #01579b; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <img src="${levelImages[currentLevel]}" alt="Nível ${currentLevel}" 
+                     style="width: 80px; height: 80px; object-fit: contain;" />
+              </div>
+              <p style="margin: 12px 0 0 0; font-size: 18px; font-weight: 600; color: #01579b;">${currentLevel}</p>
             </div>
             
             <div style="margin: 0 20px;">
               <div style="position: relative; width: 120px;">
-                <div style="height: 3px; background-color: #0ea5e9; width: 100%;"></div>
-                <div style="position: absolute; right: -10px; top: -8px; width: 0; height: 0; 
-                            border-top: 10px solid transparent; border-bottom: 10px solid transparent; 
-                            border-left: 15px solid #0ea5e9;"></div>
+                <div style="height: 4px; background: linear-gradient(90deg, #0277bd, #039be5); width: 100%;"></div>
+                <div style="position: absolute; right: -12px; top: -9px; width: 0; height: 0; 
+                            border-top: 11px solid transparent; border-bottom: 11px solid transparent; 
+                            border-left: 16px solid #039be5;"></div>
               </div>
             </div>
             
-            <div style="text-align: center; margin-left: 20px;">
-              <img src="${levelImages[newLevel]}" alt="Nível ${newLevel}" 
-                   style="width: 80px; height: 80px; object-fit: contain; border-radius: 50%; border: 3px solid #0ea5e9; padding: 5px; background-color: white;" />
-              <p style="margin: 10px 0 0 0; font-size: 16px;">${newLevel}</p>
-            </div>
-          </div>
-          
-          <!-- Award icon -->
-          <div style="text-align: center; margin: 20px 0;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="7"></circle>
-              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-            </svg>
-          </div>
-        </div>
-        
-        <!-- Date and signature area -->
-        <div style="margin-top: 30px;">
-          <p style="text-align: center; font-size: 14px; margin-bottom: 30px;">${currentDate}</p>
-          
-          <div style="display: flex; justify-content: center;">
-            <div style="width: 300px; text-align: center;">
-              <div style="border-top: 1px solid #64748b;"></div>
-              <p style="margin: 5px 0 0 0; font-size: 14px;">Assinatura do Instrutor</p>
+            <div style="text-align: center; margin-left: 25px;">
+              <div style="background: white; border-radius: 50%; padding: 5px; box-shadow: 0 4px 12px rgba(1,87,155,0.2); 
+                          border: 3px solid #01579b; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <img src="${levelImages[newLevel]}" alt="Nível ${newLevel}" 
+                     style="width: 80px; height: 80px; object-fit: contain;" />
+              </div>
+              <p style="margin: 12px 0 0 0; font-size: 18px; font-weight: 600; color: #01579b;">${newLevel}</p>
             </div>
           </div>
         </div>
         
-        <!-- Footer with serial number -->
-        <div style="margin-top: 20px; text-align: center; font-size: 12px; color: #64748b;">
+        <!-- Signature area with improved layout -->
+        <div style="margin-top: 40px; display: flex; justify-content: space-around;">
+          <div style="width: 200px; text-align: center;">
+            <div style="border-top: 1.5px solid #01579b;"></div>
+            <p style="margin: 8px 0 0 0; font-size: 16px; color: #01579b;">Professor(a)</p>
+          </div>
+          
+          <div style="width: 200px; text-align: center;">
+            <div style="border-top: 1.5px solid #01579b;"></div>
+            <p style="margin: 8px 0 0 0; font-size: 16px; color: #01579b;">Diretor(a)</p>
+          </div>
+        </div>
+        
+        <!-- Footer with certificate ID and contact info -->
+        <div style="margin-top: 20px; text-align: center; font-size: 13px; color: #0277bd;">
           <p style="margin: 0;">Academia Acquagyn - Excelência em natação desde 2005</p>
-          <p style="margin: 5px 0 0 0;">www.acquagyn.com.br | contato@acquagyn.com.br</p>
-          <p style="margin: 5px 0 0 0;">Certificado #${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+          <div style="display: flex; justify-content: center; align-items: center; margin-top: 8px;">
+            <p style="margin: 0 8px;">www.acquagyn.com.br</p>
+            <div style="width: 4px; height: 4px; background-color: #0277bd; border-radius: 50%;"></div>
+            <p style="margin: 0 8px;">contato@acquagyn.com.br</p>
+          </div>
+          <p style="margin: 8px 0 0 0; font-weight: 600; letter-spacing: 0.5px;">Certificado #${certificateId}</p>
         </div>
       </div>
     </div>
   `;
 
   try {
-    // Convert the HTML to canvas
+    // Convert the HTML to canvas with better quality
     const canvas = await html2canvas(element, {
-      scale: 2,
+      scale: 3.0, // Higher scale for better quality
       useCORS: true,
       logging: false,
+      backgroundColor: "#ffffff",
     });
 
-    // Create PDF in landscape orientation
-    const imgData = canvas.toDataURL('image/png');
+    // Create PDF in landscape orientation with better quality
+    const imgData = canvas.toDataURL('image/png', 1.0);
     const pdf = new jsPDF('landscape', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
     
-    // Download the PDF
+    // Download the PDF with improved filename
     pdf.save(`certificado_${studentName.replace(/\s+/g, '_').toLowerCase()}_${newLevel.replace(/\s+/g, '_').toLowerCase()}.pdf`);
   } finally {
     // Remove the temporary element

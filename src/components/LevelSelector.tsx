@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEvaluation, LevelType } from "@/contexts/EvaluationContext";
-import { levelImages } from "@/utils/LevelImages";
+import { levelImages } from "@/utils/levelImages";
 
 export const LevelSelector = () => {
   const { setSelectedLevel } = useEvaluation();

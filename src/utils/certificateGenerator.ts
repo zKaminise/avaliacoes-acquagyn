@@ -3,7 +3,7 @@ import html2canvas from "html2canvas";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { LevelType } from "@/contexts/EvaluationContext";
-import { levelImages } from "./LevelImages";
+import { levelImages } from "./levelImages";
 
 export const generateCertificate = async (
   studentName: string,

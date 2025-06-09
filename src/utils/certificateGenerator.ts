@@ -8,7 +8,8 @@ import { levelImages } from "./levelImages";
 export const generateCertificate = async (
   studentName: string,
   currentLevel: LevelType,
-  newLevel: LevelType
+  newLevel: LevelType,
+  teacherName: string
 ) => {
   // Create a temporary div to render the certificate content
   const element = document.createElement("div");
@@ -41,17 +42,17 @@ export const generateCertificate = async (
                 display: flex; flex-direction: column; justify-content: space-between; padding: 30px; 
                 background-color: rgba(255, 255, 255, 0.85);">
         
-        <!-- Level images in corners like the stars in the example -->
-        <div style="position: absolute; top: -15px; left: -15px; width: 70px; height: 70px;">
+        <!-- Level images in corners - increased size -->
+        <div style="position: absolute; top: -25px; left: -25px; width: 100px; height: 100px;">
           <img src="${levelImages[currentLevel]}" alt="Level" style="width: 100%; height: 100%;" />
         </div>
-        <div style="position: absolute; top: -15px; right: -15px; width: 70px; height: 70px;">
+        <div style="position: absolute; top: -25px; right: -25px; width: 100px; height: 100px;">
           <img src="${levelImages[newLevel]}" alt="Level" style="width: 100%; height: 100%;" />
         </div>
-        <div style="position: absolute; bottom: -15px; left: -15px; width: 70px; height: 70px;">
+        <div style="position: absolute; bottom: -25px; left: -25px; width: 100px; height: 100px;">
           <img src="${levelImages[currentLevel]}" alt="Level" style="width: 100%; height: 100%;" />
         </div>
-        <div style="position: absolute; bottom: -15px; right: -15px; width: 70px; height: 70px;">
+        <div style="position: absolute; bottom: -25px; right: -25px; width: 100px; height: 100px;">
           <img src="${levelImages[newLevel]}" alt="Level" style="width: 100%; height: 100%;" />
         </div>
         
@@ -76,13 +77,13 @@ export const generateCertificate = async (
             no dia ${currentDate}.
           </p>
           
-          <!-- Level progression visualization with improved styling -->
+          <!-- Level progression visualization with larger images -->
           <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
             <div style="text-align: center; margin-right: 25px;">
-              <div style="background: white; border-radius: 50%; padding: 5px; box-shadow: 0 4px 12px rgba(1,87,155,0.2); 
-                          border: 3px solid #01579b; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+              <div style="background: white; border-radius: 50%; padding: 8px; box-shadow: 0 4px 12px rgba(1,87,155,0.2); 
+                          border: 3px solid #01579b; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
                 <img src="${levelImages[currentLevel]}" alt="Nível ${currentLevel}" 
-                     style="width: 80px; height: 80px; object-fit: contain;" />
+                     style="width: 110px; height: 110px; object-fit: contain;" />
               </div>
               <p style="margin: 12px 0 0 0; font-size: 18px; font-weight: 600; color: #01579b;">${currentLevel}</p>
             </div>
@@ -97,41 +98,30 @@ export const generateCertificate = async (
             </div>
             
             <div style="text-align: center; margin-left: 25px;">
-              <div style="background: white; border-radius: 50%; padding: 5px; box-shadow: 0 4px 12px rgba(1,87,155,0.2); 
-                          border: 3px solid #01579b; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+              <div style="background: white; border-radius: 50%; padding: 8px; box-shadow: 0 4px 12px rgba(1,87,155,0.2); 
+                          border: 3px solid #01579b; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
                 <img src="${levelImages[newLevel]}" alt="Nível ${newLevel}" 
-                     style="width: 80px; height: 80px; object-fit: contain;" />
+                     style="width: 110px; height: 110px; object-fit: contain;" />
               </div>
               <p style="margin: 12px 0 0 0; font-size: 18px; font-weight: 600; color: #01579b;">${newLevel}</p>
             </div>
           </div>
         </div>
         
-        <!-- Signature area with improved layout -->
-        <div style="margin-top: 40px; display: flex; justify-content: space-around;">
+        <!-- Signature area with teacher name and fixed director -->
+        <div style="margin-top: 10px; display: flex; justify-content: space-around;">
           <div style="width: 200px; text-align: center;">
+            <p style="margin: 8px 0 4px 0; font-size: 16px; font-weight: 600; color: #01579b;">${teacherName}</p>
             <div style="border-top: 1.5px solid #01579b;"></div>
-            <p style="margin: 8px 0 0 0; font-size: 16px; color: #01579b;">Professor(a)</p>
+            <p style="margin: 0; font-size: 14px; color: #0277bd;">Professor(a)</p>
           </div>
           
           <div style="width: 200px; text-align: center;">
+            <p style="margin: 8px 0 4px 0; font-size: 16px; font-weight: 600; color: #01579b;">Acquagyn</p>
             <div style="border-top: 1.5px solid #01579b;"></div>
-            <p style="margin: 8px 0 0 0; font-size: 16px; color: #01579b;">Diretor(a)</p>
+            <p style="margin: 0; font-size: 14px; color: #0277bd;">Diretor(a)</p>
           </div>
         </div>
-        
-        <!-- Footer with certificate ID and contact info -->
-        <div style="margin-top: 20px; text-align: center; font-size: 13px; color: #0277bd;">
-          <p style="margin: 0;">Academia Acquagyn - Excelência em natação desde 2005</p>
-          <div style="display: flex; justify-content: center; align-items: center; margin-top: 8px;">
-            <p style="margin: 0 8px;">www.acquagyn.com.br</p>
-            <div style="width: 4px; height: 4px; background-color: #0277bd; border-radius: 50%;"></div>
-            <p style="margin: 0 8px;">contato@acquagyn.com.br</p>
-          </div>
-          <p style="margin: 8px 0 0 0; font-weight: 600; letter-spacing: 0.5px;">Certificado #${certificateId}</p>
-        </div>
-      </div>
-    </div>
   `;
 
   try {

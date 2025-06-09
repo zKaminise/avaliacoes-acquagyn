@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +12,7 @@ import { Award } from "lucide-react";
 export const CertificateForm = () => {
   const { studentInfo, selectedLevel } = useEvaluation();
   const [newLevel, setNewLevel] = useState<LevelType | "">("");
+  const [teacherName, setTeacherName] = useState("");
   const [isGeneratingCertificate, setIsGeneratingCertificate] = useState(false);
   
   // All available levels
@@ -53,12 +53,18 @@ export const CertificateForm = () => {
       return;
     }
     
+    if (!teacherName.trim()) {
+      toast.error("Por favor, preencha o nome do professor.");
+      return;
+    }
+    
     setIsGeneratingCertificate(true);
     try {
       await generateCertificate(
         studentInfo.name,
         selectedLevel,
-        newLevel as LevelType
+        newLevel as LevelType,
+        teacherName.trim()
       );
       toast.success("Certificado gerado com sucesso!");
     } catch (error) {
@@ -99,7 +105,17 @@ export const CertificateForm = () => {
             />
           </div>
           
-          <div className="space-y-2 md:col-span-2">
+          <div className="space-y-2">
+            <Label htmlFor="teacher-name">Nome do professor</Label>
+            <Input
+              id="teacher-name"
+              value={teacherName}
+              onChange={(e) => setTeacherName(e.target.value)}
+              placeholder="Digite o nome do professor"
+            />
+          </div>
+          
+          <div className="space-y-2">
             <Label htmlFor="new-level">Novo nível</Label>
             <Select value={newLevel} onValueChange={(value) => setNewLevel(value as LevelType)}>
               <SelectTrigger>
@@ -120,7 +136,7 @@ export const CertificateForm = () => {
           <Button
             onClick={handleGenerateCertificate}
             className="bg-gradient-to-r from-acqua-500 to-blue-500 hover:from-acqua-600 hover:to-blue-600"
-            disabled={isGeneratingCertificate || !newLevel}
+            disabled={isGeneratingCertificate || !newLevel || !teacherName.trim()}
           >
             {isGeneratingCertificate ? "Gerando certificado..." : "Gerar Certificado"}
           </Button>

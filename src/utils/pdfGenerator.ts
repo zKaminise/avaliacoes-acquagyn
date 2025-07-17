@@ -1,3 +1,4 @@
+
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { format } from "date-fns";
@@ -65,19 +66,17 @@ export const generatePDF = async (
 ) => {
   const element = document.createElement("div");
   element.style.cssText = `
-    width: 1122px;
-    min-height: 794px;
+    width: 1100px;
+    min-height: 780px;
     padding: 0;
     margin: 0;
     background: white;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Arial', sans-serif;
     position: absolute;
     left: -9999px;
     top: 0;
     font-size: 12pt;
-    line-height: 1.5;
-    letter-spacing: normal;
-    font-weight: normal;
+    line-height: 1.4;
   `;
   document.body.appendChild(element);
 
@@ -85,29 +84,29 @@ export const generatePDF = async (
   const currentDate = format(new Date(), "dd/MM/yyyy");
   const colors = levelColors[level];
 
-  const activitiesPerPage = 10;
+  const activitiesPerPage = 12;
   const totalPages = Math.ceil(levelActivities.length / activitiesPerPage);
 
   const getRatingConfig = (rating: string) => {
     const configs = {
       "Totalmente Atingido": {
-        color: "#2563EB",
-        bg: "#DBEAFE",
+        color: "#ffffff",
+        bg: "#10b981",
         label: "TOTALMENTE ATINGIDO",
       },
       "Parcialmente Atingido": {
-        color: "#2563EB",
-        bg: "#DBEAFE",
+        color: "#ffffff", 
+        bg: "#f59e0b",
         label: "PARCIALMENTE ATINGIDO",
       },
       "Não Atingido": {
-        color: "#2563EB",
-        bg: "#DBEAFE",
+        color: "#ffffff",
+        bg: "#ef4444",
         label: "NÃO ATINGIDO",
       },
       default: {
-        color: "#9CA3AF",
-        bg: "#F3F4F6",
+        color: "#6b7280",
+        bg: "#f3f4f6",
         label: "NÃO AVALIADO",
       },
     };
@@ -115,87 +114,68 @@ export const generatePDF = async (
   };
 
   const createHeader = (pageNumber: number = 1) => `
-    <div style="position: relative; padding: 20px 30px; border-bottom: 2px solid #000;">
+    <div style="padding: 20px; border-bottom: 3px solid ${colors.primary}; position: relative; z-index: 10;">
       
-      <!-- Background watermark logo - increased size and moved even closer to bottom -->
-      <div style="position: absolute; bottom: -800px; left: 30%; transform: translateX(-50%); opacity: 0.12; z-index: 1;">
-        <img src="${levelImages[level]}" 
-          alt="${level}" 
-          style="width: 1200px; height: 1200px; object-fit: contain;" />
+      <!-- Simple title -->
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h1 style="margin: 0; font-size: 20pt; font-weight: bold; color: ${colors.primary};">
+          AVALIAÇÃO PEDAGÓGICA
+        </h1>
+      </div>
+      
+      <!-- Header with logo and level info -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+        
+        <!-- Left side - Academy logo (increased size) -->
+        <div>
+          <img src="/lovable-uploads/0d85c0da-2aab-4954-9e10-99368ef81b4e.png" 
+               alt="Academia Acquagyn" 
+               style="height: 120px; width: auto;" />
         </div>
 
-      <div style="position: relative; z-index: 2;">
-        
-        <!-- Header with logo, title and level logo in same line -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          
-          <!-- Left side - Academy logo -->
-          <div>
-            <img src="/lovable-uploads/0d85c0da-2aab-4954-9e10-99368ef81b4e.png" 
-                 alt="Academia Acquagyn" 
-                 style="height: 120px; width: auto;" />
-          </div>
-          
-          <!-- Center - Title -->
-          <div style="flex: 1; text-align: center;">
-            <h1 style="margin: 0; font-size: 24pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; font-family: 'Montserrat', sans-serif; line-height: 1.2;">
-              AVALIAÇÃO PEDAGÓGICA
-            </h1>
-          </div>
-
-          <!-- Right side - Level logo with objectives - CENTERED ALIGNMENT -->
-          <div style="display: flex; flex-direction: column; align-items: center; max-width: 260px;">
-            <div style="margin-bottom: 10px;">
+        <!-- Right side - Level info -->
+        <div style="max-width: 400px; text-align: right;">
+          <div style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 10px;">
+            <div style="margin-right: 10px;">
               <img src="${levelImages[level]}" 
                    alt="${level}" 
-                   style="width: 120px; height: 120px; object-fit: contain;" />
+                   style="width: 80px; height: 80px; object-fit: contain;" />
             </div>
-            <div style="font-size: 13pt; font-weight: bold; color: ${
-              colors.primary
-            }; margin-bottom: 8px; font-family: 'Montserrat', sans-serif; line-height: 1.2; text-align: center;">
-              ${level}
-            </div>
-            <!-- Objectives section with centered text -->
-            <div style="font-size: 10pt; font-weight: normal; color: #333; text-align: center; line-height: 1.4; font-family: 'Montserrat', sans-serif;">
-              <strong>Objetivos gerais:</strong> ${levelObjectives[level]}
-            </div>
+          </div>
+          <div style="font-size: 9pt; color: #666; line-height: 1.3; text-align: right;">
+            <strong>Objetivos:</strong> ${levelObjectives[level]}
           </div>
         </div>
+      </div>
+      
+      <!-- Student info section -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; font-size: 11pt;">
         
-        <!-- Student info section -->
-        <div style="font-size: 12pt; font-family: 'Montserrat', sans-serif; line-height: 1.3;">
-          <div style="margin-bottom: 11pt; display: flex; align-items: center;">
-            <strong style="font-size: 14pt; font-weight: 600;">Nome:</strong> 
-            <span style="font-size: 13pt; margin-left: 10px; font-weight: normal;">${
-              studentInfo.name || ""
-            }</span>
-          </div>
-          
-          <div style="margin-bottom: 14px; display: flex; align-items: center;">
-            <strong style="font-size: 14pt; font-weight: 600;">Idade:</strong> 
-            <span style="font-size: 13pt; margin-left: 10px; font-weight: normal;">${
-              studentInfo.age || ""
-            }</span>
-          </div>
-          
-          <div style="margin-bottom: 14px; display: flex; align-items: center;">
-            <strong style="font-size: 14pt; font-weight: 600;">Data da avaliação:</strong> 
-            <span style="font-size: 13pt; margin-left: 10px; font-weight: normal;">${currentDate}</span>
-          </div>
-          
-          <div style="margin-bottom: 14px; display: flex; align-items: center;">
-            <strong style="font-size: 14pt; font-weight: 600;">Professor:</strong> 
-            <span style="font-size: 13pt; margin-left: 10px; font-weight: normal;">${
-              studentInfo.teacher || ""
-            }</span>
-          </div>
+        <div>
+          <strong style="color: #000000; font-weight: bold;">Nome:</strong> 
+          <div style="margin-top: 2px; color: #333;">${studentInfo.name || ""}</div>
+        </div>
+        
+        <div>
+          <strong style="color: #000000; font-weight: bold;">Idade:</strong> 
+          <div style="margin-top: 2px; color: #333;">${studentInfo.age || ""}</div>
+        </div>
+        
+        <div>
+          <strong style="color: #000000; font-weight: bold;">Data:</strong> 
+          <div style="margin-top: 2px; color: #333;">${currentDate}</div>
+        </div>
+        
+        <div>
+          <strong style="color: #000000; font-weight: bold;">Professor:</strong> 
+          <div style="margin-top: 2px; color: #333;">${studentInfo.teacher || ""}</div>
         </div>
       </div>
       
       ${
         totalPages > 1
           ? `
-        <div style="text-align: center; margin-top: 14px; font-size: 10pt; font-family: 'Montserrat', sans-serif; font-weight: normal;">
+        <div style="text-align: center; margin-top: 10px; font-size: 10pt; color: #666;">
           Página ${pageNumber} de ${totalPages}
         </div>
       `
@@ -208,10 +188,10 @@ export const generatePDF = async (
     activities: ActivityType[],
     startIndex: number = 0
   ) => `
-    <div style="padding: 20px 30px; position: relative;">
+    <div style="padding: 20px; position: relative; z-index: 10;">
       
       <!-- Activities list -->
-      <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 2;">
         ${activities
           .map((activity, index) => {
             const rating = activityRatings.find(
@@ -220,35 +200,37 @@ export const generatePDF = async (
             const ratingConfig = getRatingConfig(rating?.rating || "");
 
             return `
-            <div style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
+            <div style="padding: 15px; border: 1px solid rgba(221, 221, 221, 0.3); border-left: 4px solid ${colors.primary}; background: rgba(255, 255, 255, 0.3);">
               
-              <!-- Activity header with name and rating -->
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <!-- Activity content -->
+              <div style="display: flex; justify-content: space-between; align-items: center;">
                 
-                <!-- Activity text - INCREASED FONT SIZE -->
-                <div style="flex: 1; font-size: 12pt; line-height: 1.4; padding-right: 20px; font-weight: 600; font-family: 'Montserrat', sans-serif;">
-                  ${activity.name}
+                <!-- Activity text -->
+                <div style="flex: 1;">
+                  <div style="font-size: 11pt; line-height: 1.4; font-weight: bold; color: #333;">
+                    ${activity.name}
+                  </div>
                 </div>
 
-                <!-- Rating text - INCREASED FONT SIZE -->
-                <div style="display: flex; align-items: center; min-width: 220px; justify-content: flex-end;">
-                  <div style="padding: 8px 14px; background: ${
+                <!-- Rating badge with border radius -->
+                <div style="margin-left: 15px; flex-shrink: 0;">
+                  <div style="padding: 8px 12px; background: ${
                     ratingConfig.bg
                   }; color: ${
               ratingConfig.color
-            }; border-radius: 4px; font-size: 10pt; font-weight: 600; text-align: center; font-family: 'Montserrat', sans-serif; line-height: 1.2;">
+            }; font-size: 9pt; font-weight: 600; text-align: center; border-radius: 8px;">
                     ${ratingConfig.label}
                   </div>
                 </div>
               </div>
 
-              <!-- Observation section (if exists) -->
+              <!-- Observation section -->
               ${
                 rating?.observation
                   ? `
-                <div style="margin-top: 6px; padding: 8px; background: #f9fafb; border-left: 3px solid #e5e7eb; border-radius: 3px;">
-                  <div style="font-size: 9pt; font-weight: 600; color: #6b7280; margin-bottom: 3px; font-family: 'Montserrat', sans-serif;">OBSERVAÇÃO:</div>
-                  <div style="font-size: 10pt; color: #374151; line-height: 1.4; font-family: 'Montserrat', sans-serif; font-weight: normal;">${rating.observation}</div>
+                <div style="margin-top: 10px; background: rgba(248, 249, 250, 0.4); padding: 10px; border-left: 3px solid ${colors.primary};">
+                  <div style="font-size: 8pt; font-weight: 600; color: ${colors.primary}; margin-bottom: 4px;">OBSERVAÇÃO:</div>
+                  <div style="font-size: 9pt; color: #555; line-height: 1.3;">${rating.observation}</div>
                 </div>
               `
                   : ""
@@ -269,6 +251,13 @@ export const generatePDF = async (
     if (totalPages === 1) {
       element.innerHTML = `
         <div style="min-height: 210mm; background: white; position: relative;">
+          <!-- Level icon as full background -->
+          <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; z-index: 1; display: flex; align-items: center; justify-content: center;">
+            <img src="${levelImages[level]}" 
+                 alt="${level}" 
+                 style="width: 100%; height: 100%; object-fit: contain;" />
+          </div>
+          
           ${createHeader()}
           ${createActivitiesSection(levelActivities)}
           ${createFooter()}
@@ -276,19 +265,13 @@ export const generatePDF = async (
       `;
 
       const canvas = await html2canvas(element, {
-        scale: 3, // Adjusted scale to prevent stretching
+        scale: 2.5,
         useCORS: true,
         allowTaint: false,
         logging: false,
         backgroundColor: "white",
         width: element.offsetWidth,
         height: element.offsetHeight,
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: element.offsetWidth,
-        windowHeight: element.offsetHeight,
-        imageTimeout: 0,
-        removeContainer: false,
       });
 
       const imgData = canvas.toDataURL("image/png", 1.0);
@@ -307,6 +290,13 @@ export const generatePDF = async (
 
         element.innerHTML = `
           <div style="min-height: 210mm; background: white; position: relative;">
+            <!-- Level icon as full background -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; z-index: 1; display: flex; align-items: center; justify-content: center;">
+              <img src="${levelImages[level]}" 
+                   alt="${level}" 
+                   style="width: 100%; height: 100%; object-fit: contain;" />
+            </div>
+            
             ${createHeader(pageNum)}
             ${createActivitiesSection(pageActivities, startIndex)}
             ${createFooter()}
@@ -314,19 +304,13 @@ export const generatePDF = async (
         `;
 
         const canvas = await html2canvas(element, {
-          scale: 3, // Adjusted scale to prevent stretching
+          scale: 2.5,
           useCORS: true,
           allowTaint: false,
           logging: false,
           backgroundColor: "white",
           width: element.offsetWidth,
           height: element.offsetHeight,
-          scrollX: 0,
-          scrollY: 0,
-          windowWidth: element.offsetWidth,
-          windowHeight: element.offsetHeight,
-          imageTimeout: 0,
-          removeContainer: false,
         });
 
         const imgData = canvas.toDataURL("image/png", 1.0);

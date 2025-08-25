@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { WaterLogo } from "./WaterLogo";
 
 export const LoginForm = () => {
-  const [username, setUsername] = useState("admin@teste.com");
+  const [username, setUsername] = useState("professores@acquagyn.com");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();

@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
 
   const login = async (username: string, password: string): Promise<boolean> => {
-    if (username === "michelampk31@gmail.com" && password === "Takamori01") {
+    if (username === "professores@acquagyn.com" && password === "123456") {
       setUser({
         id: "1",
         name: "Administrador",
